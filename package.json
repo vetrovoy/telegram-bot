@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "start": "tsc && node ./dist/app.js"
   },
   "author": "",
   "license": "ISC",
@@ -13,5 +14,8 @@
     "@typescript-eslint/parser": "^6.6.0",
     "eslint": "^8.49.0",
     "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "telegraf": "^4.13.1"
   }
 }
