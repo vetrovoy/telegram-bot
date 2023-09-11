@@ -1,6 +1,8 @@
+import { callbackQuery } from "telegraf/filters";
 import { Markup } from "telegraf";
 import { TBot, TKeyboard } from "../app.type";
 import { Command } from "./command";
+import { divideButtons } from "../utils/utils";
 
 export class StartCommand extends Command {
   message: string;
@@ -25,20 +27,37 @@ export class StartCommand extends Command {
 
     // Обработчики нажатия кнопок
     this.keyboard.map((button) => {
+      // Обработчик статичной клавиатуры
       this.bot.hears(button.text, (ctx) => {
-        if (typeof button.reply === "string") {
-          ctx.reply(button.reply);
-          return;
-        }
+        const inlineKeyboard = button.reply.inline_keyboard;
 
-        if (typeof button.reply === "object") {
-          const buttons = button.reply.inline_keyboard.map((keyboard) => {
-            return keyboard.map((button) => {
-              return Markup.button.callback(button.text, button.callback_data);
+        if (inlineKeyboard && inlineKeyboard.length !== 0) {
+          // Инлайн клавиатура
+          const markupButtons = inlineKeyboard.map((button) => {
+            return Markup.button.callback(button.text, button.callback_data);
+          });
+
+          // Делим на группы по 2
+          if (markupButtons.length > 2) {
+            const dividedButtonsMarkupButtons = divideButtons(markupButtons);
+            ctx.reply(button.reply.message, Markup.inlineKeyboard(dividedButtonsMarkupButtons));
+          }else {
+            ctx.reply(button.reply.message, Markup.inlineKeyboard(markupButtons));
+          }
+          
+          // Хендлер
+          this.bot.on(callbackQuery("data"), (ctx) => {
+            const callbackData = ctx.callbackQuery.data;
+
+            inlineKeyboard.map((button) => {
+              if (button.callback_data === callbackData) {
+                ctx.reply(button.callback);
+              }
             });
           });
 
-          ctx.reply("Меню:", Markup.inlineKeyboard(buttons));
+        } else {
+          ctx.reply(button.reply.message);
         }
       });
     });

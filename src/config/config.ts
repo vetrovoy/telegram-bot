@@ -30,18 +30,32 @@ export class Config implements IConfig {
 
   setKeyboard() {
     const keyboard: TKeyboard = [
-      { text: "Button 1", reply: "Reply Button 1" },
+      { text: "Button 1", reply: { message: "Reply Button 1" } },
       {
         text: "Button 2",
         reply: {
+          message: "Меню",
           inline_keyboard: [
-            [
-              {
-                text: "Button 2 inline_keyboard",
-                callback_data: " Button 2 inline_keyboard callback_data",
-                callback: "Button 2 inline_keyboard callback_data callback",
-              },
-            ],
+            {
+              text: "Меню кнопка 1",
+              callback_data: " Меню кнопка 1",
+              callback: "Меню кнопка 1 callback",
+            },
+            {
+              text: "Меню кнопка 2",
+              callback_data: " Меню кнопка 2",
+              callback: "Меню кнопка 2 callback",
+            },
+            {
+              text: "Меню кнопка 3",
+              callback_data: " Меню кнопка 3",
+              callback: "Меню кнопка 3 callback",
+            },
+            {
+              text: "Меню кнопка 4",
+              callback_data: " Меню кнопка 4",
+              callback: "Меню кнопка 4 callback",
+            },
           ],
         },
       },

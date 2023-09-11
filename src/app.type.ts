@@ -8,13 +8,12 @@ export type TInlineKeyboardButton = {
   callback: string;
 };
 
-export type TInlineKeyboard = {
-  inline_keyboard: Array<TInlineKeyboardButton[]>;
-};
-
 export type TKeyboardButton = {
   text: string;
-  reply: string | TInlineKeyboard;
+  reply: {
+    message: string;
+    inline_keyboard?: TInlineKeyboardButton[];
+  };
 };
 
 export type TKeyboard = TKeyboardButton[] | [];
